@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 11 Lab — Software Quality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ── LOADING OVERLAY ─────────────────────────────────────── -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Submitting your answers…</div>
+</div>
+
+<!-- ── TOAST ──────────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SCREEN 1: REGISTRATION
+════════════════════════════════════════════════════════════ -->
+<div class="screen active" id="screen-register">
+  <div class="register-card">
+    <div class="register-header">
+      <div class="week-tag">Week 11 · Software Quality</div>
+      <h1>Lab Activity</h1>
+      <p>Enter your details to begin the lab.</p>
+    </div>
+
+    <div class="form-group">
+      <label for="inp-name">Full Name</label>
+      <input type="text" id="inp-name" placeholder="e.g. Ahmad bin Ibrahim" autocomplete="name">
+      <div class="field-error" id="err-name">Please enter your full name.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="inp-matrix">Student Matrix Number</label>
+      <input type="text" id="inp-matrix" placeholder="e.g. B031910234" autocomplete="off">
+      <div class="hint">As printed on your student card.</div>
+      <div class="field-error" id="err-matrix">Please enter a valid matrix number.</div>
+    </div>
+
+    <button class="btn btn-primary" id="btn-start">Start Lab →</button>
+
+    <div class="register-footer">
+      <div class="parts-preview">
+        <div class="part-chip"><div class="part-dot blue"></div>Part A — MCQ (20 questions, instant feedback)</div>
+        <div class="part-chip"><div class="part-dot teal"></div>Part B — Sort quality concepts into the right model</div>
+        <div class="part-chip"><div class="part-dot amber"></div>Part C — Scenario analysis: MySihat case study</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SCREEN 2: LAB
+════════════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-lab">
+
+  <!-- Hamburger for mobile -->
+  <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-week">Week 11 · Software Quality</div>
+      <div class="sidebar-student">
+        <div class="student-name" id="sidebar-name">—</div>
+        <div class="student-matrix" id="sidebar-matrix">—</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Lab Parts</div>
+
+        <button class="nav-item" id="nav-a">
+          <span class="nav-icon">📋</span>
+          <span>Part A — MCQ</span>
+          <span class="score-badge" id="score-a">0/20</span>
+        </button>
+
+        <button class="nav-item" id="nav-b">
+          <span class="nav-icon">🗂️</span>
+          <span>Part B — Sort</span>
+          <span class="score-badge" id="score-b">0/8</span>
+        </button>
+
+        <button class="nav-item" id="nav-c">
+          <span class="nav-icon">📝</span>
+          <span>Part C — Scenario</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn btn-ghost" style="width:100%; font-size:.8125rem;" onclick="document.getElementById('submit-area').scrollIntoView({behavior:'smooth'}); showPart('c');">
+        Submit All Answers
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="lab-content">
+
+    <!-- ── PART A: MCQ ─────────────────────────────────────── -->
+    <div class="part-panel" id="part-a">
+      <div class="part-header">
+        <div class="part-tag blue">Part A</div>
+        <h2>Multiple Choice Questions</h2>
+        <p>20 questions on software quality concepts. Click an option to answer — answers are locked once selected.</p>
+      </div>
+
+      <div class="mcq-progress">
+        <span id="mcq-progress-text">0 / 20 answered</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="mcq-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div id="mcq-questions"></div>
+    </div>
+
+    <!-- ── PART B: SORT ────────────────────────────────────── -->
+    <div class="part-panel" id="part-b">
+      <div class="part-header">
+        <div class="part-tag teal">Part B</div>
+        <h2>Sort It Out</h2>
+        <p>Click an item to select it, then click a bucket to place it. Each item belongs to exactly one quality model.</p>
+      </div>
+
+      <div class="sort-layout">
+        <div class="sort-items-pool">
+          <h3>Items to sort</h3>
+          <div class="sort-items-list" id="sort-pool"></div>
+        </div>
+
+        <div class="sort-buckets-grid">
+          <h3>Quality model buckets</h3>
+          <div id="sort-buckets"></div>
+        </div>
+      </div>
+
+      <div class="sort-actions">
+        <button class="btn btn-teal" id="btn-check-sort">Check Answers</button>
+        <button class="btn btn-outline btn-sm" id="btn-reset-sort">Reset</button>
+        <span class="sort-score-display" id="sort-score-display"></span>
+      </div>
+    </div>
+
+    <!-- ── PART C: SCENARIO ────────────────────────────────── -->
+    <div class="part-panel" id="part-c">
+      <div class="part-header">
+        <div class="part-tag amber">Part C</div>
+        <h2>Scenario Analysis</h2>
+        <p>Read the case study and answer the questions below in your own words.</p>
+      </div>
+
+      <div class="scenario-box">
+        <div class="scenario-label">📋 Case Study — MySihat</div>
+        <p>MySihat is a Malaysian e-health app used by 2 million patients to book clinic appointments, view lab results, and track medication. A recent sprint deployed on a Friday. By Saturday morning, 3,000 appointment confirmations were sent to the wrong patients due to a session management bug. The app was technically functional — no crashes, no errors thrown — but patients showed up at the wrong clinics. The team fixed and redeployed within 4 hours.</p>
+      </div>
+
+      <div class="scenario-questions">
+
+        <div class="scenario-q" id="sq-c1">
+          <div class="scenario-q-header">
+            <span class="scenario-q-label">C1</span>
+            <span class="scenario-q-text">Identify the <strong>error</strong>, <strong>fault</strong>, and <strong>failure</strong> in this scenario.</span>
+          </div>
+          <textarea id="ta-c1" placeholder="Describe the error (human action), the fault (code defect), and the failure (observable impact)…" rows="5"></textarea>
+          <div class="char-count" id="cc-c1">0 characters</div>
+        </div>
+
+        <div class="scenario-q" id="sq-c2">
+          <div class="scenario-q-header">
+            <span class="scenario-q-label">C2</span>
+            <span class="scenario-q-text">The app had zero crashes. Why does it still represent a quality failure? Reference at least <strong>two ISO/IEC 25010:2023</strong> characteristics.</span>
+          </div>
+          <textarea id="ta-c2" placeholder="Explain which ISO 25010:2023 quality characteristics were violated and why the absence of crashes does not equal quality…" rows="5"></textarea>
+          <div class="char-count" id="cc-c2">0 characters</div>
+        </div>
+
+        <div class="scenario-q" id="sq-c3">
+          <div class="scenario-q-header">
+            <span class="scenario-q-label">C3</span>
+            <span class="scenario-q-text">The team redeployed in 4 hours. Which <strong>DORA metric</strong> does this represent and what performance tier does it indicate?</span>
+          </div>
+          <textarea id="ta-c3" placeholder="Name the DORA metric, define it, and classify the team's performance tier (low/medium/high/elite)…" rows="4"></textarea>
+          <div class="char-count" id="cc-c3">0 characters</div>
+        </div>
+
+        <div class="scenario-q" id="sq-c4">
+          <div class="scenario-q-header">
+            <span class="scenario-q-label">C4</span>
+            <span class="scenario-q-text">If MySihat adds an AI feature to predict appointment no-shows, which standard applies on top of ISO 25010, and name <strong>two quality dimensions</strong> it must address.</span>
+          </div>
+          <textarea id="ta-c4" placeholder="Identify the applicable AI quality standard and describe two specific quality dimensions it introduces…" rows="4"></textarea>
+          <div class="char-count" id="cc-c4">0 characters</div>
+        </div>
+
+      </div>
+
+      <!-- Submit area -->
+      <div class="submit-area" id="submit-area">
+        <h3>Ready to submit?</h3>
+        <p>Complete all parts before submitting. Your answers will be saved and you'll see model answers immediately.</p>
+
+        <div class="submit-checklist">
+          <div class="check-item missing" id="check-mcq">
+            <span class="check-icon">○</span>
+            Part A — MCQ (all 20 questions answered)
+          </div>
+          <div class="check-item missing" id="check-sort">
+            <span class="check-icon">○</span>
+            Part B — Sort (checked answers)
+          </div>
+          <div class="check-item missing" id="check-scenario">
+            <span class="check-icon">○</span>
+            Part C — Scenario (all 4 questions answered)
+          </div>
+        </div>
+
+        <button class="btn-submit" id="btn-submit" disabled>
+          <span>Submit All Answers</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SCREEN 3: RESULTS
+════════════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-results">
+
+  <div class="results-header">
+    <div class="check-circle">✅</div>
+    <h2>Lab Submitted Successfully</h2>
+    <div class="student-info">
+      <div id="result-name"></div>
+      <div class="matrix" id="result-matrix"></div>
+    </div>
+  </div>
+
+  <div class="results-body">
+
+    <div class="score-cards">
+      <div class="score-card">
+        <div class="card-label">Part A — MCQ</div>
+        <div class="card-score blue" id="result-mcq-score">—</div>
+        <div class="card-denom">out of 20</div>
+      </div>
+      <div class="score-card">
+        <div class="card-label">Part B — Sort</div>
+        <div class="card-score teal" id="result-sort-score">—</div>
+        <div class="card-denom">out of 8</div>
+      </div>
+      <div class="score-card">
+        <div class="card-label">Part C — Scenario</div>
+        <div class="card-score amber">✍️</div>
+        <div class="card-denom">marked by lecturer</div>
+      </div>
+    </div>
+
+    <!-- MCQ Results -->
+    <div class="results-section">
+      <div class="results-section-header">
+        <div class="part-tag blue" style="margin:0">Part A</div>
+        <h3>MCQ — Your Answers</h3>
+      </div>
+      <div class="results-section-body">
+        <div id="mcq-results-list"></div>
+      </div>
+    </div>
+
+    <!-- Sort Results -->
+    <div class="results-section">
+      <div class="results-section-header">
+        <div class="part-tag teal" style="margin:0">Part B</div>
+        <h3>Sort — Your Placements</h3>
+      </div>
+      <div class="results-section-body">
+        <div id="sort-results-body"></div>
+      </div>
+    </div>
+
+    <!-- Scenario Results -->
+    <div class="results-section">
+      <div class="results-section-header">
+        <div class="part-tag amber" style="margin:0">Part C</div>
+        <h3>Scenario — Your Answers &amp; Model Answers</h3>
+      </div>
+      <div class="results-section-body">
+        <div id="scenario-results"></div>
+      </div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn btn-primary" id="btn-print" style="width:auto">🖨️ Print / Save as PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="data/questions.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

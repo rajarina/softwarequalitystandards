@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ebaba028-82dd-47db-9729-085067df250b__list_organizations",
+      "mcp__ebaba028-82dd-47db-9729-085067df250b__list_projects",
+      "mcp__ebaba028-82dd-47db-9729-085067df250b__get_cost",
+      "mcp__ebaba028-82dd-47db-9729-085067df250b__confirm_cost",
+      "mcp__ebaba028-82dd-47db-9729-085067df250b__create_project",
+      "mcp__ebaba028-82dd-47db-9729-085067df250b__get_project_url",
+      "mcp__ebaba028-82dd-47db-9729-085067df250b__get_publishable_keys",
+      "mcp__ebaba028-82dd-47db-9729-085067df250b__apply_migration",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Claude\\\\Software Quality Standard Lab\\\\week11-lab\\\\css\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Claude\\\\Software Quality Standard Lab\\\\week11-lab\\\\js\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Claude\\\\Software Quality Standard Lab\\\\week11-lab\\\\data\")"
+    ]
+  }
+}
