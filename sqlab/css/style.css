@@ -1187,7 +1187,7 @@ tbody td { padding: .75rem 1rem; color: var(--text); vertical-align: middle; }
 }
 
 @media print {
-  .sidebar, .sidebar-toggle, .submit-area, .results-actions { display: none !important; }
+  .sidebar, .sidebar-toggle, .submit-area, .results-actions, .loading-overlay, .toast { display: none !important; }
   .screen { display: block !important; }
   #screen-register, #screen-lab { display: none !important; }
   #screen-results { background: white; }
